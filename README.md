@@ -3,7 +3,7 @@
 
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
 
-[**API**](http://weftio.github.io/gregor/)
+[**API**](http://weftio.github.io/gregor/) | [**CHANGELOG**](https://github.com/weftio/gregor/blob/master/CHANGELOG.md)
 
 # Gregor
 
