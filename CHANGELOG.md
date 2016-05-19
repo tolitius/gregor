@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.3.1] - 2016-05-18
+
+### Added
+- vars for byte-array (de)serializers
+
 ## [0.3.0] - 2016-05-09
 
 Apologies for the several (pretty minor) breaking changes.
