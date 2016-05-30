@@ -1,4 +1,5 @@
 (ns gregor.core
+  (:refer-clojure :exclude [flush send])
   (:import [org.apache.kafka.common TopicPartition]
            [org.apache.kafka.clients.consumer Consumer KafkaConsumer ConsumerRecords
             ConsumerRecord OffsetAndMetadata OffsetCommitCallback
