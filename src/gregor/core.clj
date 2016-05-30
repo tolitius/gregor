@@ -4,8 +4,11 @@
             ConsumerRecord OffsetAndMetadata OffsetCommitCallback
             ConsumerRebalanceListener]
            [org.apache.kafka.clients.producer Producer KafkaProducer Callback
-            ProducerRecord RecordMetadata])
-  (:require [clojure.string :as str]))
+            ProducerRecord RecordMetadata]
+           [kafka.admin AdminUtils]
+           [kafka.utils ZkUtils])
+  (:require [clojure.set :as set]
+            [clojure.string :as str]))
 
 
 (def ^:no-doc str-deserializer "org.apache.kafka.common.serialization.StringDeserializer")
@@ -394,3 +397,102 @@
        (merge config)
        (as-properties)
        (KafkaProducer.))))
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; Topic Management ;;
+;;;;;;;;;;;;;;;;;;;;;;
+
+(defn- validate-zookeeper-config
+  "A helper for validating a Zookeeper configuration map and applying default
+  values. Any invalid item in the provided config will result in an assertion
+  failure.
+
+  Args:
+    config-map: A map with Zookeeper connection details. Valid keys are as
+                follows:
+
+                :connection-string (mandatory) A valid connection string for
+                                               the Zookeeper instance to
+                                               connect to.
+                :session-timeout   (optional)  The session timeout in millis.
+                :connect-timeout   (optional)  The connect timeout in millis."
+  [config-map]
+  (let [defaults {:connection-string nil
+                  :session-timeout 10000
+                  :connect-timeout 10000}
+        merged (merge defaults config-map)
+        valid-keys (set (keys defaults))
+        merged-keys (set (keys merged))]
+    (assert (set/subset? merged-keys valid-keys)
+            (format "Invalid Zookeeper config: %s"
+                    (str/join ", " (set/difference merged-keys valid-keys))))
+    (assert (string? (:connection-string merged))
+            "Zookeeper config must contain a valid :connection-string")
+    (assert (integer? (:session-timeout merged))
+            "Zookeeper :session-timeout must be an integer")
+    (assert (integer? (:connect-timeout merged))
+            "Zookeeper :connect-timeout must be an integer")
+    merged))
+
+(defmacro with-zookeeper
+  "A utility macro for interacting with Zookeeper.
+
+  Args:
+    zk-config: A map with Zookeeper connection details. This will be validated
+               using validate-zookeeper-config before use.
+    zookeeper: This will be bound to an instance of ZkUtils while the body is
+               executed. The connection to Zookeeper will be cleaned up when
+               the body exits."
+  [zk-config zookeeper & body]
+  `(let [zk-config# (validate-zookeeper-config ~zk-config)
+         client-and-conn# (ZkUtils/createZkClientAndConnection
+                           (:connection-string zk-config#)
+                           (:session-timeout zk-config#)
+                           (:connect-timeout zk-config#))]
+     (with-open [client# (._1 client-and-conn#)
+                 connection# (._2 client-and-conn#)]
+       (let [~zookeeper (ZkUtils. client# connection# false)]
+         ~@body))))
+
+(defn create-topic
+  "Create a topic.
+
+  Args:
+    zk-config: A map with Zookeeper connection details as expected by
+               with-zookeeper.
+    topic: The name of the topic to create.
+    partitions: The number of ways to partition the topic.
+    replication-factor: The replication factor for the topic.
+    config: A map of configuration options for the topic."
+  [zk-config topic {:keys [partitions replication-factor config]
+                    :or {partitions 1
+                         replication-factor 1
+                         config nil}}]
+  (with-zookeeper zk-config zookeeper
+    (AdminUtils/createTopic zookeeper
+                            topic
+                            (int partitions)
+                            (int replication-factor)
+                            (as-properties config))))
+
+(defn topic-exists?
+  "Query whether or not a topic exists.
+
+  Args:
+    zk-config: A map with Zookeeper connection details as expected by
+               with-zookeeper.
+    topic: The name of the topic to check for."
+  [zk-config topic]
+  (with-zookeeper zk-config zookeeper
+    (AdminUtils/topicExists zookeeper topic)))
+
+(defn delete-topic
+  "Delete a topic.
+
+  Args:
+    zk-config: A map with Zookeeper connection details as expected by
+               with-zookeeper.
+    topic: The name of the topic to delete."
+  [zk-config topic]
+  (with-zookeeper zk-config zookeeper
+    (AdminUtils/deleteTopic zookeeper topic)))
