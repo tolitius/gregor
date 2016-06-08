@@ -71,3 +71,31 @@
     (is (thrown? IllegalStateException
                  (seek-to! c :end "unittest" 0)
                  (= 5 (position c "unittest" 0))))))
+
+(defn- zookeeper-config
+  []
+  (when-let [connection-string (System/getenv "GREGOR_TEST_ZOOKEEPER")]
+    {:connection-string connection-string
+     :session-timeout 10000
+     :connect-timeout 10000}))
+
+(defn- wait-for
+  [pred timeout-ms]
+  (let [start (System/currentTimeMillis)]
+    (while (and
+            (not (pred))
+            (< (System/currentTimeMillis) (+ start timeout-ms)))
+      (Thread/sleep 100))))
+
+(deftest topic-management
+  (when-let [zk-config (zookeeper-config)]
+    (let [topic "test-topic"]
+      (is (not (topic-exists? zk-config topic)))
+
+      (create-topic zk-config topic {})
+      (wait-for #(topic-exists? zk-config topic) 10000)
+      (is (topic-exists? zk-config topic))
+
+      (delete-topic zk-config topic)
+      (wait-for #(not (topic-exists? zk-config topic)) 10000)
+      (is (not (topic-exists? zk-config topic))))))
