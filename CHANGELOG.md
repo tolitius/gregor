@@ -1,6 +1,21 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.4.0] - 2016-06-08
+
+### Added
+
+Topic management via [Pull Request #5](https://github.com/weftio/gregor/pull/5):
+
+- `create-topic`: Create a new topic.
+- `topic-exists?`: Check if a topic exists.
+- `delete-topic`: Delete an existing topic.
+
+### Fixed
+
+- [Pull Request #7](https://github.com/weftio/gregor/pull/7): Avoid a `NullPointerException` in the rebalance listener.
+- [Pull Request #4](https://github.com/weftio/gregor/pull/4): Exclude `clojure.core/flush` and `clojure.core/send`.
+
 ## [0.3.1] - 2016-05-18
 
 ### Added
