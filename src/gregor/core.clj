@@ -475,10 +475,10 @@
                          config nil}}]
   (with-zookeeper zk-config zookeeper
     (AdminUtils/createTopic zookeeper
-                                        topic
-                                        (int partitions)
-                                        (int replication-factor)
-                                        (as-properties config))))
+                            topic
+                            (int partitions)
+                            (int replication-factor)
+                            (as-properties config))))
 
 (defn topic-exists?
   "Query whether or not a topic exists.
