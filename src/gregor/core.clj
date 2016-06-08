@@ -54,9 +54,11 @@
   [assigned-cb revoked-cb]
   (reify ConsumerRebalanceListener
     (onPartitionsAssigned [this partitions]
-      (assigned-cb partitions))
+      (when assigned-cb
+        (assigned-cb partitions)))
     (onPartitionsRevoked [this partitions]
-      (revoked-cb partitions))))
+      (when revoked-cb
+        (revoked-cb partitions)))))
 
 (defn offset-and-metadata
   "Metadata for when an offset is committed."
