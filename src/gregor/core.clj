@@ -88,7 +88,8 @@
     (close ([p] (.close p))
            ([p timeout]
             ;; Tries to close the producer cleanly within the specified timeout.
-            ;; If the close does not complete within the timeout, fail any pending send requests and force close the producer
+            ;; If the close does not complete within the timeout, fail any pending send
+            ;; requests and force close the producer
             (.close p timeout TimeUnit/SECONDS)))
   KafkaConsumer
     (close ([c] (.close c))))
