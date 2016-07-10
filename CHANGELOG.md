@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.4.1] - 2016-07-10
+
+### Added
+
+- Closeable protocol for consumers and producers via [Pull Request #9](https://github.com/weftio/gregor/pull/9) which includes closing a producer with a timeout in seconds.
+
+### Changes
+
+- Use Kafka 0.9 compiled with Scala 2.11 instead of 2.10 because the Kafka maintainers recommend to do so.
+
 ## [0.4.0] - 2016-06-08
 
 ### Added
