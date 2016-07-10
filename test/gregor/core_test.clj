@@ -5,6 +5,7 @@
            [org.apache.kafka.clients.producer MockProducer]
            [org.apache.kafka.common TopicPartition]
            [org.apache.kafka.common.serialization StringSerializer]
+           [java.util.concurrent TimeUnit]
            [java.util ArrayList]))
 
 (deftest producing
@@ -99,3 +100,19 @@
       (delete-topic zk-config topic)
       (wait-for #(not (topic-exists? zk-config topic)) 10000)
       (is (not (topic-exists? zk-config topic))))))
+
+(extend-protocol Closeable
+  MockProducer
+    (close ([p] (.close p))
+           ([p timeout] (.close p timeout TimeUnit/SECONDS)))
+  MockConsumer
+    (close ([c] (.close c))))
+
+(deftest closing
+  (let [p1 (MockProducer. true (StringSerializer.) (StringSerializer.))
+        p2 (MockProducer. true (StringSerializer.) (StringSerializer.))
+        c (MockConsumer. (OffsetResetStrategy/EARLIEST))]
+    ;; mocks do not throw on send/poll when they are closed, so sanity check:
+    (close p1)
+    (close p2 42)
+    (close c)))
