@@ -7,7 +7,8 @@
            [org.apache.kafka.clients.producer Producer KafkaProducer Callback
             ProducerRecord RecordMetadata]
            [kafka.admin AdminUtils]
-           [kafka.utils ZkUtils])
+           [kafka.utils ZkUtils]
+           [java.util.concurrent TimeUnit])
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
@@ -76,11 +77,21 @@
    :topic     (.topic record)
    :offset    (.offset record)})
 
-(defn close
-  "Close the consumer or producer, waiting indefinitely for any needed cleanup."
-  [^java.io.Closeable closable]
-  (.close closable))
+(defprotocol Closeable 
+  "Provides two ways to close things: a default one with 'close [thing]'
+   and the one with the specified timeout."
+  (close [this]
+         [this timeout]))
 
+(extend-protocol Closeable
+  KafkaProducer
+    (close ([p] (.close p))
+           ([p timeout]
+            ;; Tries to close the producer cleanly within the specified timeout.
+            ;; If the close does not complete within the timeout, fail any pending send requests and force close the producer
+            (.close p timeout TimeUnit/SECONDS)))
+  KafkaConsumer
+    (close ([c] (.close c))))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Kafka Consumer ;;
