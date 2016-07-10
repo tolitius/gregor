@@ -466,9 +466,15 @@
     zk-config: A map with Zookeeper connection details as expected by
                with-zookeeper.
     topic: The name of the topic to create.
-    partitions: The number of ways to partition the topic.
-    replication-factor: The replication factor for the topic.
-    config: A map of configuration options for the topic."
+    An unnamed configuration map. Valid keys are as follows:
+  
+      :partitions         (optional) The number of ways to partition the topic.
+                                     Defaults to 1.
+      :replication-factor (optional) The replication factor for the topic.
+                                     Defaults to 1.
+      :config             (optional) A map of configuration options for the
+                                     topic.
+  "
   [zk-config topic {:keys [partitions replication-factor config]
                     :or {partitions 1
                          replication-factor 1
