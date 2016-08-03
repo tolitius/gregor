@@ -8,7 +8,8 @@
             ProducerRecord RecordMetadata]
            [kafka.admin AdminUtils]
            [kafka.utils ZkUtils]
-           [java.util.concurrent TimeUnit])
+           [java.util.concurrent TimeUnit]
+           [scala.collection JavaConversions])
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
@@ -497,6 +498,16 @@
                             (int partitions)
                             (int replication-factor)
                             (as-properties config))))
+
+(defn topics
+  "Query existing topics.
+
+  Args:
+    zk-config: A map with Zookeeper connection details as expected by
+               with-zookeeper."
+  [zk-config]
+  (with-zookeeper zk-config zookeeper
+    (-> zookeeper .getAllTopics JavaConversions/seqAsJavaList seq)))
 
 (defn topic-exists?
   "Query whether or not a topic exists.
