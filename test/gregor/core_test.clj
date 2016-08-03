@@ -5,8 +5,7 @@
            [org.apache.kafka.clients.producer MockProducer]
            [org.apache.kafka.common TopicPartition]
            [org.apache.kafka.common.serialization StringSerializer]
-           [java.util.concurrent TimeUnit]
-           [java.util ArrayList]))
+           [java.util.concurrent TimeUnit]))
 
 (deftest producing
   (let [p (MockProducer. true (StringSerializer.) (StringSerializer.))]
