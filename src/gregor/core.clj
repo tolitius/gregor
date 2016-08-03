@@ -404,7 +404,7 @@
   The StringSerializer class is the default for both key.serializer and value.serializer
 
   More info on settings is available here:
-  http://kafka.apache.org/081/documentation.html#producerconfigs"
+  http://kafka.apache.org/documentation.html#producerconfigs"
   ^KafkaProducer
   ([servers] (producer servers {}))
   ([servers config]
