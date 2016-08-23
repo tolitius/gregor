@@ -9,9 +9,9 @@
 
 Lightweight Clojure bindings for [Apache Kafka](http://kafka.apache.org/) `0.9.X` and up.
 
-Currently targetting Kafka `0.9.0.1`. Support for `0.10.0.0` is planned soon.
+Currently targetting Kafka `0.10.0.1`.
 
-Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html) and [New Consumer](http://kafka.apache.org/090/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html) and is almost feature complete as of `0.2.0`. The intent of this project is to stay very close to the Kafka API instead of adding more advanced features.
+Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html) and [New Consumer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html) and is almost feature complete as of `0.2.0`. The intent of this project is to stay very close to the Kafka API instead of adding more advanced features.
 
 ## Example
 
@@ -67,7 +67,7 @@ the `seq` returned by `poll` is a map. Here's an example with a JSON object as t
 
 Gregor provides the `send` function for asynchronously sending a record to a topic. There
 are multiple arities which correspond to those of the `ProducerRecord`
-[Java constructor](https://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html). If
+[Java constructor](https://kafka.apache.org/0100/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html). If
 you'd like to provide a callback to be invoked when the send has been acknowledged use
 `send-then` instead.
 
@@ -90,6 +90,12 @@ Query about a topic's existence:
 
 ``` clojure
 (topic-exists? {:connection-string "localhost:2181"} "some-topic")
+```
+
+List existing topics:
+
+``` clojure
+(topics {:connection-string "localhost:2181"})
 ```
 
 
