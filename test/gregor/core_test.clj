@@ -96,6 +96,9 @@
       (wait-for #(topic-exists? zk-config topic) 10000)
       (is (topic-exists? zk-config topic))
 
+      (is (not (empty? (topics zk-config))))
+      (is (some #{topic} (topics zk-config)))
+
       (delete-topic zk-config topic)
       (wait-for #(not (topic-exists? zk-config topic)) 10000)
       (is (not (topic-exists? zk-config topic))))))
