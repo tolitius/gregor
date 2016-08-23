@@ -44,9 +44,7 @@
 (defn- ->tps
   [fn-name topic partition tps]
   (let [pairs (arg-pairs fn-name topic partition tps)]
-    (->> pairs
-         (map #(apply topic-partition %))
-         (into-array TopicPartition))))
+    (->> pairs (map #(apply topic-partition %)))))
 
 (defn- reify-occ
   [cb]
@@ -471,6 +469,21 @@
        (let [~zookeeper (ZkUtils. client# connection# false)]
          ~@body))))
 
+(defn- rack-aware-mode-constant
+  "Convert a keyword name for a RackAwareMode into the appropriate constant
+  from the underlying Kafka library.
+
+  Args:
+    mode: A keyword of the same name as one of the constants in
+          kafka.admin.RackAwareMode."
+  [mode]
+  (let [valid-modes {:disabled kafka.admin.RackAwareMode$Disabled$
+                     :enforced kafka.admin.RackAwareMode$Enforced$
+                     :safe kafka.admin.RackAwareMode$Safe$}]
+    (when-not (contains? valid-modes mode)
+      (throw (IllegalArgumentException. (format "Bad RackAwareMode: %s" mode))))
+    (get valid-modes mode)))
+
 (defn create-topic
   "Create a topic.
 
@@ -486,17 +499,22 @@
                                      Defaults to 1.
       :config             (optional) A map of configuration options for the
                                      topic.
+      :rack-aware-mode    (optional) Control how rack aware replica assignment
+                                     is done. Valid values are :disabled,
+                                     :enforced, :safe. Default is :safe.
   "
-  [zk-config topic {:keys [partitions replication-factor config]
+  [zk-config topic {:keys [partitions replication-factor config rack-aware-mode]
                     :or {partitions 1
                          replication-factor 1
-                         config nil}}]
+                         config nil
+                         rack-aware-mode :safe}}]
   (with-zookeeper zk-config zookeeper
     (AdminUtils/createTopic zookeeper
                             topic
                             (int partitions)
                             (int replication-factor)
-                            (as-properties config))))
+                            (as-properties config)
+                            (rack-aware-mode-constant rack-aware-mode))))
 
 (defn topic-exists?
   "Query whether or not a topic exists.
