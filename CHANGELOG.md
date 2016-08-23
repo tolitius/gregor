@@ -1,20 +1,34 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.5.0] - 2016-08-23
+
+### Added
+- new function `topics` which lists existing Kafka topics.
+
+### Changes
+- upgrade to Kafka `0.10.0.1`
+- `kafka.admin.AdminUtils/createTopic` acquired another argument in `0.10`. It's an
+  additional optional argument for `create-topic`.
+
+### Fixed
+- fix producer doc link
+- remove unused Java class import
+
 ## [0.4.1] - 2016-07-10
 
 ### Added
-
-- Closeable protocol for consumers and producers via [Pull Request #9](https://github.com/weftio/gregor/pull/9) which includes closing a producer with a timeout in seconds.
+- Closeable protocol for consumers and producers via
+  [Pull Request #9](https://github.com/weftio/gregor/pull/9) which includes closing a
+  producer with a timeout in seconds.
 
 ### Changes
-
-- Use Kafka 0.9 compiled with Scala 2.11 instead of 2.10 because the Kafka maintainers recommend to do so.
+- Use Kafka 0.9 compiled with Scala 2.11 instead of 2.10 because the Kafka maintainers
+  recommend to do so.
 
 ## [0.4.0] - 2016-06-08
 
 ### Added
-
 Topic management via [Pull Request #5](https://github.com/weftio/gregor/pull/5):
 
 - `create-topic`: Create a new topic.
@@ -22,9 +36,10 @@ Topic management via [Pull Request #5](https://github.com/weftio/gregor/pull/5):
 - `delete-topic`: Delete an existing topic.
 
 ### Fixed
-
-- [Pull Request #7](https://github.com/weftio/gregor/pull/7): Avoid a `NullPointerException` in the rebalance listener.
-- [Pull Request #4](https://github.com/weftio/gregor/pull/4): Exclude `clojure.core/flush` and `clojure.core/send`.
+- [Pull Request #7](https://github.com/weftio/gregor/pull/7): Avoid a
+  `NullPointerException` in the rebalance listener.
+- [Pull Request #4](https://github.com/weftio/gregor/pull/4): Exclude
+  `clojure.core/flush` and `clojure.core/send`.
 
 ## [0.3.1] - 2016-05-18
 

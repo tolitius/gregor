@@ -392,19 +392,16 @@
 (defn producer
   "Return a KafkaProducer.
 
-  The producer is thread safe and sharing a single producer instance across
-  threads will generally be faster than having multiple instances.
+   The producer is thread safe and sharing a single producer instance across
+   threads will generally be faster than having multiple instances.
 
-  Args:
+   Args:
     servers: comma-separated host:port strs or list of strs as bootstrap servers
     config: an optional map of str to str containing additional producer
             configuration. More info on optional config is available here:
-            http://kafka.apache.org/documentation.html#newconsumerconfigs
-
-  The StringSerializer class is the default for both key.serializer and value.serializer
-
-  More info on settings is available here:
-  http://kafka.apache.org/documentation.html#producerconfigs"
+            http://kafka.apache.org/documentation.html#producerconfigs
+            
+   The StringSerializer class is the default for both key.serializer and value.serializer"
   ^KafkaProducer
   ([servers] (producer servers {}))
   ([servers config]
