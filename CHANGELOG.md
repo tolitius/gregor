@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.5.1] - 2016-08-28
+
+### Fixed
+
+- Fix rack-aware-mode-constant by replacing class with object instance.
+
 ## [0.5.0] - 2016-08-23
 
 ### Added
