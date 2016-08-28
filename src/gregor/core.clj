@@ -467,6 +467,11 @@
        (let [~zookeeper (ZkUtils. client# connection# false)]
          ~@body))))
 
+(def rack-aware-modes
+  {:disabled (kafka.admin.RackAwareMode$Disabled$.)
+   :enforced (kafka.admin.RackAwareMode$Enforced$.)
+   :safe (kafka.admin.RackAwareMode$Safe$.)})
+
 (defn- rack-aware-mode-constant
   "Convert a keyword name for a RackAwareMode into the appropriate constant
   from the underlying Kafka library.
@@ -475,12 +480,9 @@
     mode: A keyword of the same name as one of the constants in
           kafka.admin.RackAwareMode."
   [mode]
-  (let [valid-modes {:disabled kafka.admin.RackAwareMode$Disabled$
-                     :enforced kafka.admin.RackAwareMode$Enforced$
-                     :safe kafka.admin.RackAwareMode$Safe$}]
-    (when-not (contains? valid-modes mode)
-      (throw (IllegalArgumentException. (format "Bad RackAwareMode: %s" mode))))
-    (get valid-modes mode)))
+  (when-not (contains? rack-aware-modes mode)
+    (throw (IllegalArgumentException. (format "Bad RackAwareMode: %s" mode))))
+  (get rack-aware-modes mode))
 
 (defn create-topic
   "Create a topic.
