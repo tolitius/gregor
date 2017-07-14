@@ -26,17 +26,18 @@
     (close c)))
 
 (deftest consuming
-  (let [c (MockConsumer. (OffsetResetStrategy/EARLIEST))
-        _ (assign! c "test-topic" 0)
-        c (doto c
-            (.updateBeginningOffsets {(topic-partition "test-topic" 0) 0})
-            (.addRecord (ConsumerRecord. "test-topic" 0 0 0 {:a 1}))
-            (.addRecord (ConsumerRecord. "test-topic" 0 0 0 {:b 2})))
+  (let [c  (MockConsumer. (OffsetResetStrategy/EARLIEST))
+        _  (assign! c "test-topic" 0)
+        c  (doto c
+             (.updateBeginningOffsets {(topic-partition "test-topic" 0) 0})
+             (.addRecord (ConsumerRecord. "test-topic" 0 0 0 {:a 1}))
+             (.addRecord (ConsumerRecord. "test-topic" 0 1 0 {:b 2}))
+             ;; duplicate offset (uniquely identifies each record within the partition)
+             (.addRecord (ConsumerRecord. "test-topic" 0 0 0 {:c 3}))
+             (.addRecord (ConsumerRecord. "test-topic" 0 2 0 {:d 4})))
         ms (records c)]
-    (is (= {:a 1}
-           (-> ms (first) (first) (:value))))
-    (is (= {:b 2}
-           (-> ms (first) (second) (:value))))
+    (is (= [{:a 1} {:b 2} {:d 4}]
+           (mapv :value (first ms))))
     (is (= #{(topic-partition "test-topic" 0)}
            (assignment c)))
     (.close c)))
