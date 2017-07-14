@@ -15,6 +15,7 @@
                                    :passphrase    :env}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
+                  ["uberjar"]
                   ["vcs" "commit"]
                   ["vcs" "tag" "v" "--no-sign"]
                   ["deploy" "clojars"]
