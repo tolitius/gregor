@@ -8,7 +8,6 @@
                  [org.apache.kafka/kafka_2.11 "0.11.0.0"]]
   :plugins [[s3-wagon-private "1.1.2"]
             [lein-codox "0.10.3"]]
-  :codox {:output-path "doc"}
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
                                    :sign-releases false
                                    :username      :env
