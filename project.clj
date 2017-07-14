@@ -10,7 +10,9 @@
             [lein-codox "0.10.3"]]
   :codox {:output-path "doc"}
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
-                                   :sign-releases false}}
+                                   :sign-releases false
+                                   :username      :env/lein-username
+                                   :passphrase    :env/lein-passphrase}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
