@@ -11,8 +11,8 @@
   :codox {:output-path "doc"}
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
                                    :sign-releases false
-                                   :username      :env/lein-username
-                                   :passphrase    :env/lein-passphrase}}
+                                   :username      :env
+                                   :passphrase    :env}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
