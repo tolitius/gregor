@@ -1,15 +1,12 @@
-<a href="http://www.weft.io">
-<img src="http://www.weft.io/prod-assets/weftHorizonLogoTrans-08df1aeb53f624b6d89986fd03628f7b258ae6df90e41bb645dde4ceb5c8b724.png" width="125"/></a>
-
-[![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
-
-[**API**](http://weftio.github.io/gregor/) | [**CHANGELOG**](https://github.com/weftio/gregor/blob/master/CHANGELOG.md)
-
 # Gregor
 
 Lightweight Clojure bindings for [Apache Kafka](http://kafka.apache.org/) `0.9.X` and up.
 
 Currently tested on Kafka `0.11.0.0`.
+
+[![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
+
+[**API**](http://ccann.github.io/gregor/) | [**CHANGELOG**](https://github.com/ccann/gregor/blob/master/CHANGELOG.md)
 
 Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html) and [New Consumer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html) and is almost feature complete as of `0.2.0`. The intent of this project is to stay very close to the Kafka API instead of adding more advanced features.
 
