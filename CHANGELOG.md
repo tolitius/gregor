@@ -1,10 +1,14 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.6.0] - 2017-07-14
+
+### Changes
+- upgrade to Kafka `0.11.0.0`
+
 ## [0.5.1] - 2016-08-28
 
 ### Fixed
-
 - Fix rack-aware-mode-constant by replacing class with object instance.
 
 ## [0.5.0] - 2016-08-23
