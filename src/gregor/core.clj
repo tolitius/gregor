@@ -345,7 +345,9 @@
   ([^String topic key value]
    (ProducerRecord. topic key value))
   ([^String topic ^Integer partition key value]
-   (ProducerRecord. topic partition key value)))
+   (ProducerRecord. topic partition key value))
+  ([^String topic ^Integer partition ^Long timestamp key value]
+   (ProducerRecord. topic partition timestamp key value)))
 
 (defn- send-record
   [^Producer producer ^ProducerRecord record & [callback]]
@@ -369,7 +371,9 @@
   ([^Producer producer ^String topic key value]
    (send-record producer (->producer-record topic key value)))
   ([^Producer producer ^String topic ^Integer partition key value]
-   (send-record producer (->producer-record topic partition key value))))
+   (send-record producer (->producer-record topic partition key value)))
+  ([^Producer producer ^String topic ^Integer partition ^Long timestamp key value]
+   (send-record producer (->producer-record topic partition timestamp key value))))
 
 (defn send-then
   "Asynchronously send a record to a topic, providing at least a topic and value, and
@@ -386,7 +390,9 @@
   ([^Producer producer ^String topic key value callback]
    (send-record producer (->producer-record topic key value) callback))
   ([^Producer producer ^String topic ^Integer partition key value callback]
-   (send-record producer (->producer-record topic partition key value) callback)))
+   (send-record producer (->producer-record topic partition key value) callback))
+  ([^Producer producer ^String topic ^Integer partition ^Long timestamp key value callback]
+   (send-record producer (->producer-record topic partition timestamp key value) callback)))
 
 (defn producer
   "Return a KafkaProducer.
