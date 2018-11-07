@@ -354,9 +354,10 @@
            (reify Callback
              (onCompletion [this metadata ex]
                (try
-                 (callback {:offset (.offset metadata)
-                            :partition (.partition metadata)
-                            :topic (.topic metadata)}
+                 (callback (when metadata
+                             {:offset (.offset metadata)
+                              :partition (.partition metadata)
+                              :topic (.topic metadata)})
                            ex)
                  (catch Exception _ nil)))))
     (.send producer record)))
