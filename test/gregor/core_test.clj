@@ -8,14 +8,43 @@
 
 (deftest producing
   (let [p (MockProducer. true (StringSerializer.) (StringSerializer.))]
-    (send p "unittest" {:a 1 :b "two"})
-    (send-then p "unittest" {:a 2 :b "three"} (fn [metadata ex]))
+    (send p "unittest" {:a 1 :b "foo"})
+    (send-then p "unittest" {:a 2 :b "bar"} (fn [metadata ex]))
     (let [values (.history p)
-          one (-> values first .value)
-          two (-> values second .value)]
-      (is (= {:a 1 :b "two"} one))
-      (is (= {:a 2 :b "three"} two))
+          one    (-> values first .value)
+          two    (-> values second .value)]
+      (is (= {:a 1 :b "foo"} one))
+      (is (= {:a 2 :b "bar"} two))
       (.close p))))
+
+(deftest send-arities
+  (let [time      (System/currentTimeMillis)
+        partition 0
+        topic     "unittest"
+        p         (MockProducer. true (StringSerializer.) (StringSerializer.))
+        key       0]
+
+    (send p topic 1)
+    (send-then p topic 2 (fn [_ _]))
+    (is (= 1 (-> p .history first .value)))
+    (is (= 2 (-> p .history second .value)))
+
+    (send p topic key 3)
+    (send-then p topic key 4 (fn [_ _]))
+    (is (= 3 (-> p .history (#(nth % 2)) .value)))
+    (is (= 4 (-> p .history (#(nth % 3)) .value)))
+
+    (send p topic partition key 5)
+    (send-then p topic partition key 6 (fn [_ _]))
+    (is (= 5 (-> p .history (#(nth % 4)) .value)))
+    (is (= 6 (-> p .history (#(nth % 5)) .value)))
+
+    (send p topic partition time key 7)
+    (send-then p topic partition time key 8 (fn [_ _]))
+    (is (= 7 (-> p .history (#(nth % 6)) .value)))
+    (is (= 8 (-> p .history (#(nth % 7)) .value)))
+
+    (.close p)))
 
 (deftest subscribing
   (let [c (consumer "localhost:9092" "unit-test" ["test-topic"])]
@@ -41,7 +70,6 @@
            (assignment c)))
     (.close c)))
 
-
 (deftest commit
   (let [c (doto (MockConsumer. (OffsetResetStrategy/EARLIEST))
             (assign! "unittest" 0)
@@ -51,7 +79,7 @@
     (poll c)
     (commit-offsets! c)
     (is (= {:offset 2 :metadata nil} (committed c "unittest" 0)))
-        (.addRecord c (ConsumerRecord. "unittest" 0 2 0 {:key :b}))
+    (.addRecord c (ConsumerRecord. "unittest" 0 2 0 {:key :b}))
     (poll c)
     (commit-offsets-async! c)
     (is (= {:offset 3 :metadata nil} (committed c "unittest" 0)))
@@ -105,10 +133,10 @@
 
 (extend-protocol Closeable
   MockProducer
-    (close ([p] (.close p))
-           ([p timeout] (.close p timeout TimeUnit/SECONDS)))
+  (close ([p] (.close p))
+    ([p timeout] (.close p timeout TimeUnit/SECONDS)))
   MockConsumer
-    (close ([c] (.close c))))
+  (close ([c] (.close c))))
 
 (deftest closing
   (let [p1 (MockProducer. true (StringSerializer.) (StringSerializer.))

@@ -13,7 +13,6 @@
   (:require [clojure.set :as set]
             [clojure.string :as str]))
 
-
 (def ^:no-doc str-deserializer "org.apache.kafka.common.serialization.StringDeserializer")
 (def ^:no-doc str-serializer "org.apache.kafka.common.serialization.StringSerializer")
 (def ^:no-doc byte-array-deserializer "org.apache.kafka.common.serialization.ByteArrayDeserializer")
@@ -70,30 +69,30 @@
 
 (defn consumer-record->map
   [^ConsumerRecord record]
-  {:value     (.value record)
-   :key       (.key record)
-   :partition (.partition record)
-   :topic     (.topic record)
-   :offset    (.offset record)
-   :timestamp (.timestamp record)
+  {:value          (.value record)
+   :key            (.key record)
+   :partition      (.partition record)
+   :topic          (.topic record)
+   :offset         (.offset record)
+   :timestamp      (.timestamp record)
    :timestamp-type (.toString (.timestampType record))})
 
 (defprotocol Closeable
   "Provides two ways to close things: a default one with 'close [thing]'
    and the one with the specified timeout."
   (close [this]
-         [this timeout]))
+    [this timeout]))
 
 (extend-protocol Closeable
   KafkaProducer
-    (close ([p] (.close p))
-           ([p timeout]
-            ;; Tries to close the producer cleanly within the specified timeout.
-            ;; If the close does not complete within the timeout, fail any pending send
-            ;; requests and force close the producer
-            (.close p timeout TimeUnit/SECONDS)))
+  (close ([p] (.close p))
+    ([p timeout]
+     ;; Tries to close the producer cleanly within the specified timeout.
+     ;; If the close does not complete within the timeout, fail any pending send
+     ;; requests and force close the producer
+     (.close p timeout TimeUnit/SECONDS)))
   KafkaConsumer
-    (close ([c] (.close c))))
+  (close ([c] (.close c))))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Kafka Consumer ;;
@@ -112,9 +111,8 @@
   [^Consumer consumer]
   (set (.assignment consumer)))
 
-
 (defn commit-offsets-async!
- "Commit offsets returned by the last poll for all subscribed topics and partitions,
+  "Commit offsets returned by the last poll for all subscribed topics and partitions,
   or manually specify offsets to commit.
 
   This is an asynchronous call and will not block. Any errors encountered are either
@@ -328,7 +326,6 @@
        (subscribe c topics))
      c)))
 
-
 ;;;;;;;;;;;;;;;;;;;;
 ;; Kafka Producer ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -347,9 +344,9 @@
   ([^String topic key value]
    (ProducerRecord. topic key value))
   ([^String topic ^Integer partition key value]
-   (ProducerRecord. topic partition key value))
+   (ProducerRecord. topic (int partition) key value))
   ([^String topic ^Integer partition ^Long timestamp key value]
-   (ProducerRecord. topic partition timestamp key value)))
+   (ProducerRecord. topic (int partition) (long timestamp) key value)))
 
 (defn- send-record
   [^Producer producer ^ProducerRecord record & [callback]]
@@ -359,9 +356,9 @@
              (onCompletion [this metadata ex]
                (try
                  (callback (when metadata
-                             {:offset (.offset metadata)
+                             {:offset    (.offset metadata)
                               :partition (.partition metadata)
-                              :topic (.topic metadata)})
+                              :topic     (.topic metadata)})
                            ex)
                  (catch Exception _ nil)))))
     (.send producer record)))
@@ -393,9 +390,9 @@
   ([^Producer producer ^String topic key value callback]
    (send-record producer (->producer-record topic key value) callback))
   ([^Producer producer ^String topic ^Integer partition key value callback]
-   (send-record producer (->producer-record topic partition key value) callback))
+   (send-record producer (->producer-record topic (int partition) key value) callback))
   ([^Producer producer ^String topic ^Integer partition ^Long timestamp key value callback]
-   (send-record producer (->producer-record topic partition timestamp key value) callback)))
+   (send-record producer (->producer-record topic (int partition) (long timestamp) key value) callback)))
 
 (defn producer
   "Return a KafkaProducer.
@@ -479,7 +476,7 @@
 (def rack-aware-modes
   {:disabled (kafka.admin.RackAwareMode$Disabled$.)
    :enforced (kafka.admin.RackAwareMode$Enforced$.)
-   :safe (kafka.admin.RackAwareMode$Safe$.)})
+   :safe     (kafka.admin.RackAwareMode$Safe$.)})
 
 (defn- rack-aware-mode-constant
   "Convert a keyword name for a RackAwareMode into the appropriate constant

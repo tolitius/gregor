@@ -5,9 +5,10 @@
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.apache.kafka/kafka_2.12 "1.0.0"]]
-  :plugins [[lein-codox "0.10.3"]
-            [lein-eftest "0.5.0"]]
+                 [org.apache.kafka/kafka_2.12 "2.0.0"]]
+  :codox {:output-path "codox"}
+  :plugins [[lein-codox "0.10.5"]
+            [lein-eftest "0.5.3"]]
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
                                    :sign-releases false
                                    :username      :env

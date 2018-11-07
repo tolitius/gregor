@@ -1,6 +1,6 @@
 # Gregor
 
-Lightweight Clojure bindings for [Apache Kafka](http://kafka.apache.org/) `1.0.0` and up.
+Lightweight Clojure bindings for [Apache Kafka](http://kafka.apache.org/)
 
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
 
@@ -10,7 +10,7 @@ Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.o
 
 ## Example
 
-Here's an example of at-least-once processing (using the excellent [`mount`](https://github.com/tolitius/mount)):
+Here's an example of at-least-once processing (using [`mount`](https://github.com/tolitius/mount)):
 
 ```clojure
 (ns gregor-sample-app.core
