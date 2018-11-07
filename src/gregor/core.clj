@@ -74,9 +74,11 @@
    :key       (.key record)
    :partition (.partition record)
    :topic     (.topic record)
-   :offset    (.offset record)})
+   :offset    (.offset record)
+   :timestamp (.timestamp record)
+   :timestamp-type (.toString (.timestampType record))})
 
-(defprotocol Closeable 
+(defprotocol Closeable
   "Provides two ways to close things: a default one with 'close [thing]'
    and the one with the specified timeout."
   (close [this]
@@ -117,7 +119,7 @@
 
   This is an asynchronous call and will not block. Any errors encountered are either
   passed to the callback (if provided) or discarded.
-  
+
   offsets (optional) - commit the specified offsets for the specified list of topics
   and partitions to Kafka. A seq of offset maps, as below:
 
@@ -131,7 +133,7 @@
         :partition 0
         :offset 17
         :metadata \"Dude, that's so meta.\"}
-  
+
   The committed offset should be the next message your application will consume,
   i.e. lastProcessedMessageOffset + 1.
   "
@@ -400,7 +402,7 @@
     config: an optional map of str to str containing additional producer
             configuration. More info on optional config is available here:
             http://kafka.apache.org/documentation.html#producerconfigs
-            
+
    The StringSerializer class is the default for both key.serializer and value.serializer"
   ^KafkaProducer
   ([servers] (producer servers {}))
@@ -493,7 +495,7 @@
                with-zookeeper.
     topic: The name of the topic to create.
     An unnamed configuration map. Valid keys are as follows:
-  
+
       :partitions         (optional) The number of ways to partition the topic.
                                      Defaults to 1.
       :replication-factor (optional) The replication factor for the topic.
