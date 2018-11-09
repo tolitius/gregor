@@ -1,6 +1,6 @@
 # Gregor
 
-Lightweight Clojure wrapper functions for [Apache Kafka](http://kafka.apache.org/)
+Lightweight Clojure wrapper functions for [Apache Kafka](http://kafka.apache.org/) Consumer + Producer APIs.
 
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
 
