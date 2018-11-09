@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [0.8.0] - 2018-11-7
+
+### Changes
+- upgrade to Kafka `2.0.0`
+- support producer, consumer timestamp fields adding arities to send functions
+- avoid NPE in send-then
+
+### Changes
+- upgrade to Kafka `0.11.0.0`
+
 ## [0.6.0] - 2017-07-14
 
 ### Changes
