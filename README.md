@@ -2,6 +2,12 @@
 
 Lightweight Clojure wrapper functions for [Apache Kafka](http://kafka.apache.org/) Consumer + Producer APIs.
 
+```clojure
+ :dependencies [[org.clojure/clojure "1.9.0"]
+                [org.apache.kafka/kafka_2.12 "2.0.0"]]
+
+```
+
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
 
 [**API**](http://ccann.github.io/gregor/) | [**CHANGELOG**](https://github.com/ccann/gregor/blob/master/CHANGELOG.md)
