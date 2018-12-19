@@ -92,7 +92,12 @@
      ;; requests and force close the producer
      (.close p timeout TimeUnit/SECONDS)))
   KafkaConsumer
-  (close ([c] (.close c))))
+  (close ([c] (.close c))
+    ([p timeout]
+     ;; Tries to close the consumer cleanly within the specified timeout.
+     ;; If the consumer is unable to complete offset commits and gracefully leave
+     ;; the group before the timeout expires, the consumer is force closed.
+     (.close p timeout TimeUnit/SECONDS))))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Kafka Consumer ;;
