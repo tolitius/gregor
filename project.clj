@@ -6,7 +6,6 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.apache.kafka/kafka_2.12 "2.1.1"]]
-  :codox {:output-path "codox"}
   :plugins [[lein-eftest "0.5.6"]]
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
                                    :sign-releases false
