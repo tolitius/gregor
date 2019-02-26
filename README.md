@@ -7,9 +7,9 @@ Lightweight Clojure wrapper for [Apache Kafka](http://kafka.apache.org/) Consume
                 [org.apache.kafka/kafka_2.12 "2.1.1"]]
 
 ```
+[![cljdoc Badge](https://cljdoc.org/badge/io.weft/gregor)](https://cljdoc.org/d/io.weft/gregor/CURRENT)
 
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
-[![cljdoc Badge](https://cljdoc.org/badge/io.weft/gregor)](https://cljdoc.org/d/io.weft/gregor/CURRENT)
 
 [**CHANGELOG**](https://github.com/ccann/gregor/blob/master/CHANGELOG.md)
 
