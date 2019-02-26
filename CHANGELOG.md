@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to Gregor will be documented in this file.
 
+## [1.0.0] - 2019-02-26
+
+### Changes
+- upgrade to Kafka 2.1.1
+- upgrade to Clojure 1.10
+- upgrade lein-eftest to 0.5.6
+- drop lein-codox for cljdoc
+- [PR #5](https://github.com/ccann/gregor/pull/5): close with timeout for `KafkaConsumer`
+- refactor docstrings
+
 ## [0.8.0] - 2018-11-7
 
 ### Changes

@@ -1,18 +1,19 @@
 # Gregor
 
-Lightweight Clojure wrapper functions for [Apache Kafka](http://kafka.apache.org/) Consumer + Producer APIs.
+Lightweight Clojure wrapper for [Apache Kafka](http://kafka.apache.org/) Consumer + Producer APIs.
 
 ```clojure
- :dependencies [[org.clojure/clojure "1.9.0"]
-                [org.apache.kafka/kafka_2.12 "2.0.0"]]
+ :dependencies [[org.clojure/clojure "1.10.0"]
+                [org.apache.kafka/kafka_2.12 "2.1.1"]]
 
 ```
 
 [![Clojars Project](https://clojars.org/io.weft/gregor/latest-version.svg)](https://clojars.org/io.weft/gregor)
+[![cljdoc Badge](https://cljdoc.org/badge/io.weft/gregor)](https://cljdoc.org/d/io.weft/gregor/CURRENT)
 
-[**API**](http://ccann.github.io/gregor/) | [**CHANGELOG**](https://github.com/ccann/gregor/blob/master/CHANGELOG.md)
+[**CHANGELOG**](https://github.com/ccann/gregor/blob/master/CHANGELOG.md)
 
-Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html) and [New Consumer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html) and is almost feature complete as of `0.2.0`. The intent of this project is to stay very close to the Kafka API instead of adding more advanced features.
+Gregor wraps most of the Java API for the Kafka [Producer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html) and [New Consumer](http://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html) The goal of this project is to stay very close to the Kafka API instead of adding more advanced features.
 
 ## Example
 
