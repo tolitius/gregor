@@ -10,8 +10,8 @@
   :plugins [[lein-eftest "0.5.6"]]
   :deploy-repositories {"clojars" {:url           "https://clojars.org/repo"
                                    :sign-releases false
-                                   :username      :env
-                                   :passphrase    :env}}
+                                   :username      :env/clojars_username
+                                   :passphrase    :env/clojars_password}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["uberjar"]
